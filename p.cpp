@@ -46,12 +46,38 @@ public:
     }
 };
 
+void readInput(int &suits, int &n) {
+    while (true) {
+        cout << "Введіть кількість мастей: ";
+        if (cin >> suits) break;
+        else {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Треба ввести натуральне число. Спробуйте ще раз.\n";
+        }
+    }
+    //    cout << "Введіть кількість карт в масті: ";
+    //    cin >> ranks;
+    while (true) {
+        cout << "Введіть кількість карт для роздачі: ";
+        if (cin >> n) break;
+        else {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Треба ввести натуральне число. Спробуйте ще раз.\n";
+        }
+    }
+}
+
 int main() {
 try {
     int suits, n;
+    readInput(suits, n);
     Deck deck(suits, 13); //створили нашу колоду
+    } catch (const exception &e) {
+        cerr << "Сталася помилка: " << e.what() << "\n";
     } catch (...) {
         cerr << "Сталася невідома помилка!\n";
-    }
+    } 
     return 0;
 }
