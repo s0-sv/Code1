@@ -90,7 +90,7 @@ void splitDeck(vector<int> &deckparts, Deck &deck, int n) {
     cout << "\n";
 }
 
- void computeStats(const vector<int> &deckparts, double &avg, double &median) {
+ void computeStats(const vector<int> &deckparts, double &avg, double &median, int &mode, vector<pair<int,double>> &lengthPercent) {
     // середня довжина стопок
     double sum = 0;
     for(int len : deckparts) {
@@ -108,26 +108,89 @@ void splitDeck(vector<int> &deckparts, Deck &deck, int n) {
     else
         median = (sortedDeck[sortedDeck.size()/2 - 1] + sortedDeck[sortedDeck.size()/2]) / 2.0;
 
+
+
+    // мода
+    int currentLength = sortedDeck[0];
+    mode = sortedDeck[0];
+    int maxCount = 1;
+    int currentCount = 1;
+    for (int i = 1; i <= sortedDeck.size(); ++i) {
+        if (i == sortedDeck.size() || sortedDeck[i] != currentLength) {
+            double percent = 100.0 * currentCount / sortedDeck.size();
+            lengthPercent.push_back({currentLength, percent}); // обчислюємо відсоток і додаємо в  lengthPercent
+
+            if (currentCount > maxCount) {
+                maxCount = currentCount;
+                mode = currentLength;
+            }
+
+            if (i < sortedDeck.size()) {
+                currentLength = sortedDeck[i];
+                currentCount = 1;
+            }
+        } else { //якщо довжина така ж як і була у попередніх колод, то просто збільшуємо currentCount
+            currentCount++;
+        }
     }
 }
 
 void outStats(double avg, double median) {
     cout << "Середня довжина стопок: " << avg << "\n";
     cout << "Медіана довжини стопок: " << median << "\n";
+
+    cout << "Розподіл (% для кожної довжини):" << "\n";
+    for (int i = 0; i < lengthPercent.size(); i++) {
+        cout << "Довжина " << lengthPercent[i].first << ": " << lengthPercent[i].second << "%" << "\n";
+    }
+}
+
+void runTests() {
+    {
+        cout << "===== Тест 1: 4 масті, 16 карт =====\n";
+        int suits = 4, n = 16;
+        Deck deck(suits,13);
+        vector<int> deckparts;
+        splitDeck(deckparts, deck, n);
+        double avg, median;
+        int mode;
+        vector<pair<int,double>> lengthPercent;
+        computeStats(deckparts, avg, median, mode, lengthPercent);
+        outStats(avg, median, mode, lengthPercent);
+    }
+    {
+        cout << "===== Тест 2: 3 масті, 100 карт =====\n";
+        int suits = 3, n = 100;
+        Deck deck(suits,13);
+        vector<int> deckparts;
+        splitDeck(deckparts, deck, n);
+        double avg, median;
+        int mode;
+        vector<pair<int,double>> lengthPercent;
+        computeStats(deckparts, avg, median, mode, lengthPercent);
+        outStats(avg, median, mode, lengthPercent);
+    }
 }
 
 int main() {
 try {
     int suits, n;
     readInput(suits, n);
+
     Deck deck(suits, 13); //створили нашу колоду
 
     vector<int> deckparts; //довжини стопок в різних колодах
     splitDeck(deckparts, deck, n);
+
     double avg, median;
+    int mode;
+    vector<pair<int,double>> lengthPercent; // вектор пар, де перша частина це довжина стопки, а друге це її відсоток скільки вона зустрічається
+    computeStats(deckparts, avg, median, mode, lengthPercent); // рахуємо всі данні про довжини стопок
+    
+    outStats(avg, median, mode, lengthPercent); //виводимо результати
 
-    outStats(avg, median); //виводимо результати
-
+    runTests();
+    
     } catch (const exception &e) {
         cerr << "Сталася помилка: " << e.what() << "\n";
     } catch (...) {
