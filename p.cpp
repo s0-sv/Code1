@@ -90,6 +90,27 @@ void splitDeck(vector<int> &deckparts, Deck &deck, int n) {
     cout << "\n";
 }
 
+ void computeStats(const vector<int> &deckparts, double &avg, double &median) {
+    // середня довжина стопок
+    double sum = 0;
+    for(int len : deckparts) {
+        sum += len;
+    }
+    avg = sum / deckparts.size();
+
+
+    // медіана
+    vector<int> sortedDeck = deckparts;
+    sort(sortedDeck.begin(), sortedDeck.end());
+    cout << sortedDeck.size() << sortedDeck[sortedDeck.size()/2] << sortedDeck[sortedDeck.size()/2 - 1] << sortedDeck.size()/2;
+    if(sortedDeck.size() % 2 == 1)
+        median = sortedDeck[sortedDeck.size()/2]; // якщо непарна кількість то виводимо середній елемент як медіану
+    else
+        median = (sortedDeck[sortedDeck.size()/2 - 1] + sortedDeck[sortedDeck.size()/2]) / 2.0;
+
+    }
+}
+
 int main() {
 try {
     int suits, n;
@@ -98,6 +119,7 @@ try {
 
     vector<int> deckparts; //довжини стопок в різних колодах
     splitDeck(deckparts, deck, n);
+    double avg, median;
 
     } catch (const exception &e) {
         cerr << "Сталася помилка: " << e.what() << "\n";
