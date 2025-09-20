@@ -111,6 +111,11 @@ void splitDeck(vector<int> &deckparts, Deck &deck, int n) {
     }
 }
 
+void outStats(double avg, double median) {
+    cout << "Середня довжина стопок: " << avg << "\n";
+    cout << "Медіана довжини стопок: " << median << "\n";
+}
+
 int main() {
 try {
     int suits, n;
@@ -120,6 +125,8 @@ try {
     vector<int> deckparts; //довжини стопок в різних колодах
     splitDeck(deckparts, deck, n);
     double avg, median;
+
+    outStats(avg, median); //виводимо результати
 
     } catch (const exception &e) {
         cerr << "Сталася помилка: " << e.what() << "\n";
