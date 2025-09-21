@@ -135,7 +135,7 @@ void splitDeck(vector<int> &deckparts, Deck &deck, int n) {
     }
 }
 
-void outStats(double avg, double median) {
+void outStats(double avg, double median,  int mode, const vector<pair<int,double>> &lengthPercent) {
     cout << "Середня довжина стопок: " << avg << "\n";
     cout << "Медіана довжини стопок: " << median << "\n";
 
