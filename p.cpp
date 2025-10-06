@@ -83,7 +83,7 @@ void splitDeck(vector<int> &deckparts, Deck &deck, int n) {
     currenlen = 1;
     for(int i = 1; i < n; i++) {
         Card c = deck();
-        if(!(c < prev)) { // “As long as the next card is higher than the previous one or has the same value, it is placed in the pile.”
+        if(c >= prev) { // “As long as the next card is higher than the previous one or has the same value, it is placed in the pile.”
             currenlen++;
         } else {
             deckparts.push_back(currenlen);
@@ -161,7 +161,7 @@ void outStats(double avg, double median,  const vector<int> &modes, const vector
     }
 }
 
-/*void runTests() {
+void runTests() {
     {
         cout << "===== Test 1: 4 suits, 16 cards =====\n";
         int suits = 4, n = 16;
@@ -169,10 +169,10 @@ void outStats(double avg, double median,  const vector<int> &modes, const vector
         vector<int> deckparts;
         splitDeck(deckparts, deck, n);
         double avg, median;
-        int mode;
+        vector<int> modes;
         vector<pair<int,double>> lengthPercent;
-        computeStats(deckparts, avg, median, mode, lengthPercent);
-        outStats(avg, median, mode, lengthPercent);
+        computeStats(deckparts, avg, median, modes, lengthPercent);
+        outStats(avg, median, modes, lengthPercent);
     }
     {
         cout << "===== Test 2: 3 suits, 100 cards =====\n";
@@ -181,12 +181,12 @@ void outStats(double avg, double median,  const vector<int> &modes, const vector
         vector<int> deckparts;
         splitDeck(deckparts, deck, n);
         double avg, median;
-        int mode;
+        vector<int> modes;
         vector<pair<int,double>> lengthPercent;
-        computeStats(deckparts, avg, median, mode, lengthPercent);
-        outStats(avg, median, mode, lengthPercent);
+        computeStats(deckparts, avg, median, modes, lengthPercent);
+        outStats(avg, median, modes, lengthPercent);
     }
-}*/
+}
 
 int main() {
 try {
@@ -205,7 +205,7 @@ try {
     
     outStats(avg, median, modes, lengthPercent);
 
-    //runTests();
+    runTests();
     
     } catch (const exception &e) {
         cerr << "An error has occurred: " << e.what() << "\n";
